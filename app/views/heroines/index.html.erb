@@ -1,10 +1,20 @@
-<h2>All Heroines</h2>
+<% if @power %>
+  <h2> All Heroines with <%= @power.name.titlecase %> power</h2>
+  <% else %>
+  <h2>All Heroines</h2>
+<% end %>
 
 <ul>
   <% @heroines.each do |heroine| %>
     <li>
-      <%= heroine.super_name %>
+      <%= link_to heroine.super_name.titlecase, heroine_path(heroine) %>
     </li>
     <br>
   <% end %>
 </ul>
+
+<%= form_tag(heroines_path, method: "get") do %>
+  <%= select_tag "power", options_from_collection_for_select(Power.all,'name', 'name'),
+       prompt: "Select Power" %>
+  <%= submit_tag "Submit" %>
+<% end %>
